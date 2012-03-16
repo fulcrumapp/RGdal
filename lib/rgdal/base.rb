@@ -85,6 +85,10 @@ module RGdal
           name
         end
       end
+      
+      def single_layer?(bool=false)
+        define_method(:single_layer?) { bool }
+      end
 
       def reference(name=nil)
         define_method :reference do
@@ -100,10 +104,3 @@ module RGdal
     end
   end
 end
-
-# Terminology Reference:
-#
-# layer = table
-# field_def = column
-# feature = record
-# field = record attribute
