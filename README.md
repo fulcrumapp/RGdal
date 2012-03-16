@@ -2,13 +2,13 @@
 
 Wrapper for the C++ish GDal Api
 
-## Terminology Reference:
+### Terminology Reference:
 
-GDAL  //  Relation Database
-layer == table
-field_def == column
-feature == record
-field == record attribute
+GDAL  //  Relation Database  
+layer == table  
+field_def == column  
+feature == record  
+field == record attribute  
 
 ## Examples
     
