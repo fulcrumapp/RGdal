@@ -1,0 +1,8 @@
+require 'gdal/ogr'
+require 'rgdal/overrides'
+require 'rgdal/version'
+require 'rgdal/base'
+require 'rgdal/csv'
+require 'rgdal/kml'
+require 'rgdal/shp'
+require 'rgdal/geojson'
