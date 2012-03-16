@@ -20,7 +20,6 @@ field == record attribute
     
 ### Reading
     > file = RGdal::SHP.new('tmp/tmpfolder')
-    > file.create_layer('filename')
     > layer = file.current_layer
     > layer.features.first.attributes
     => {attr: 'foo', bar: 'baz'}
@@ -30,7 +29,7 @@ field == record attribute
 
 Add this line to your application's Gemfile:
 
-    gem 'rgdal'
+    gem 'rgdal', git: 'git@github.com:spatialnetworks/RGdal.git'
 
 And then execute:
 
