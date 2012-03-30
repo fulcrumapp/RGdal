@@ -38,7 +38,7 @@ module RGdal
       @current_layer = layers.first
       @columns = @current_layer ? @current_layer.fields.map(&:name) : []
     end
-    
+
     def layers
       @layers = @data_source.layers
     end
@@ -49,12 +49,14 @@ module RGdal
     
     def switch_layer(name)
       @current_layer = @layers.select { |layer| layer.name == name }.first
+      @columns = @current_layer ? @current_layer.fields.map(&:name) : []
     end
     
     def new_layer(filename='export')
       layer(filename).tap do |layer|
         @current_layer = layer
         @layers << layer
+        @columns = []
       end
     end
     
