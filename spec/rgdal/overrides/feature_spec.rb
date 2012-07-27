@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Gdal::Ogr::Feature do
-
   before(:each) do
     @path = File.join(Dir.pwd, "tmp/#{SecureRandom.hex(16)}.csv")
     @csv = RGdal::CSV.new(@path)

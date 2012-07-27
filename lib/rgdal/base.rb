@@ -49,13 +49,15 @@ module RGdal
       @columns = nil
     end
 
-    def layer_field_definition(name, options={})
+    def add_column(name, options={})
       options, name = {type: Gdal::Ogr::OFTSTRING, width: 254}.merge(options), header(name)
       @columns.push(name)
       field_definition = create_field_definition(name, options)
       @current_layer.create_field(field_definition)
       field_definition = nil
     end
+
+    alias_method :layer_field_definition, :add_column
 
     def create_field_definition(name, options)
       Gdal::Ogr::FieldDefn.new(name, options[:type]).tap do |field|

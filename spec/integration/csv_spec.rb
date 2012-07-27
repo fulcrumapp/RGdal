@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe RGdal::CSV do
-
   before(:each) do
     @fixture  = YAML.load(File.read('spec/fixtures/record.yml'))['example_one']
     @path     = File.join(Dir.pwd, 'tmp', "#{SecureRandom.hex(16)}.csv")
@@ -19,7 +18,7 @@ describe RGdal::CSV do
   end
 
   it 'should create a valid CSV file' do
-    @fixture.keys.each { |key| @csv.layer_field_definition(key) }
+    @fixture.keys.each { |key| @csv.add_column(key) }
     @csv.feature(0.0, 0.0, @fixture)
     @csv.close()
 

@@ -2,6 +2,7 @@ require 'rspec'
 require 'rgdal'
 require 'csv'
 require 'tempfile'
+require 'json'
 require 'securerandom'
 require 'yaml'
 
