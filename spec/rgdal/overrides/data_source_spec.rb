@@ -12,4 +12,8 @@ describe Gdal::Ogr::DataSource do
     @csv.new_layer('foobar')
     @csv.data_source.layers.length.should == 2
   end
+
+  it 'should have a driver name' do
+    @csv.driver_name.should == 'CSV'
+  end
 end

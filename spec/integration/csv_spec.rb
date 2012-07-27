@@ -18,10 +18,12 @@ describe RGdal::CSV do
     @csv.current_layer.fields.size.should == 1
   end
 
-  it 'should create an row in the csv' do
-    @fixture.keys.each { |k| @csv.layer_field_definition(k) }
-    @csv.feature('0.0', '0.0', @fixture)
-    value = @csv.current_layer
-    @csv.current_layer.reset_reading
+  it 'should create a valid CSV file' do
+    @fixture.keys.each { |key| @csv.layer_field_definition(key) }
+    @csv.feature(0.0, 0.0, @fixture)
+    @csv.close()
+
+    csv = CSV.open(@path, headers: true).first.to_hash
+    csv['city'].should == 'Washington'
   end
 end

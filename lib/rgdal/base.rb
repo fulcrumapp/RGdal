@@ -1,30 +1,6 @@
 module RGdal
   class Base
-
-    # API Methods
-    class << self
-      def driver(name)
-        define_method :driver_name do
-          name
-        end
-      end
-
-      def single_layer?(bool)
-        define_method(:single_layer?) { bool }
-      end
-
-      def reference(name)
-        define_method :reference do
-          name
-        end
-      end
-
-      def format(name)
-        define_method :format do
-          name
-        end
-      end
-    end
+    include API
 
     attr_reader :data_source
     attr_reader :current_layer
@@ -35,7 +11,8 @@ module RGdal
     format Gdal::Ogr::WKBUNKNOWN
 
     def initialize(source)
-      @data_source = driver.create_data_source(source)
+      @source = source
+      @data_source = driver.create_data_source(@source)
       @current_layer = layers.first
       @columns = @current_layer ? @current_layer.fields.map(&:name) : []
     end
@@ -65,6 +42,39 @@ module RGdal
       @data_source.create_layer(filename, reference, format)
     end
 
+    def close
+      @driver = nil
+      @data_source = nil
+      @current_layer = nil
+      @columns = nil
+    end
+
+    def layer_field_definition(name, options={})
+      options, name = {type: Gdal::Ogr::OFTSTRING, width: 254}.merge(options), header(name)
+      @columns.push(name)
+      field_definition = create_field_definition(name, options)
+      @current_layer.create_field(field_definition)
+      field_definition = nil
+    end
+
+    def create_field_definition(name, options)
+      Gdal::Ogr::FieldDefn.new(name, options[:type]).tap do |field|
+        field.set_width(options[:width]) if options[:width]
+        field.set_precision(options[:precision]) if options[:precision]
+      end
+    end
+
+    def feature(longitude, latitude, attributes={})
+      feat = Gdal::Ogr::Feature.new(@current_layer.definition)
+      set_geometry(latitude, longitude, feat)
+      set_attributes(attributes, feat)
+
+      @current_layer.create_feature(feat)
+      @current_layer.reset_reading
+    end
+
+private
+
     def header(key)
       key
     end
@@ -73,41 +83,18 @@ module RGdal
       attrib
     end
 
-    def close
-
-    end
-
-    def layer_field_definition(name, options={})
-      options = {'type' => Gdal::Ogr::OFTSTRING, 'width' => 254}.merge(options)
-      name = header(name)
-      @columns.push name
-      field_definition = Gdal::Ogr::FieldDefn.new(name, options['type'])
-      field_definition.set_width(options['width']) if options['width']
-      field_definition.set_precision(options['precision']) if options['precision']
-      @current_layer.create_field(field_definition)
-      field_definition = nil
-    end
-
-    def feature(longitude, latitude, opts={})
-      opts.keys.each { |key| layer_field_definition(key) } if @columns.empty?
-      feat = Gdal::Ogr::Feature.new(@current_layer.definition)
-
-      # Geometry
-      wkt = "POINT(#{longitude} #{latitude})"
-      geometry = Gdal::Ogr::create_geometry_from_wkt(wkt)
-      feat.set_geometry(geometry)
-
-      # Metadata
-      opts.each do |key, value|
+    def set_attributes(attributes, feat)
+      attributes.each do |key, value|
         key = header(key)
-        if value.is_a?(String) && @columns.include?(key)
-          feat.set_field(key, value(value))
-        end
+        feat.set_field(key, value(value)) if value.is_a?(String) && @columns.include?(key)
       end
+    end
 
-      @current_layer.create_feature(feat)
-      feat, geometry = nil, nil
-      @current_layer.reset_reading
+    def set_geometry(latitude, longitude, feat)
+      coordinates = "POINT(#{longitude} #{latitude})"
+      geometry = Gdal::Ogr::create_geometry_from_wkt(coordinates)
+      feat.set_geometry(geometry)
+      geometry = nil
     end
   end
 end

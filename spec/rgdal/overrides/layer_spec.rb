@@ -20,7 +20,6 @@ describe Gdal::Ogr::Layer do
 
   it 'should return a field hash with types' do
     hash = @csv.current_layer.fields_hash
-    hash.class.should  == Hash
     hash.keys.should   == %w(latitude longitude city state misc)
     hash.values.should == %w(String) * 5
   end

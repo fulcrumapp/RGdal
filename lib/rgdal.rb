@@ -1,4 +1,5 @@
 require 'gdal/ogr'
+require 'rgdal/api'
 require 'rgdal/overrides'
 require 'rgdal/version'
 require 'rgdal/base'

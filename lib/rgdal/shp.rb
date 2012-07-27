@@ -6,6 +6,8 @@ module RGdal
 
     FILE_EXTENSIONS = ['.shp', '.dbf', '.prj', '.shx']
 
+private
+
     def header(key)
       key[0..9]
     end
