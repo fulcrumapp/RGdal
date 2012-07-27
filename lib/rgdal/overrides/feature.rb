@@ -8,15 +8,8 @@ module Gdal
       def attributes
         {}.tap do |hash|
           get_field_count.times do |i|
-            defn = get_field_defn_ref(i)
-            name = defn.name
-            value = get_field(i)
-
-            hash[name] = value
-
-            defn = nil
-            name = nil
-            value = nil
+            definition = self.get_field_defn_ref(i)
+            hash[definition.name] = get_field(i)
           end
         end
       end

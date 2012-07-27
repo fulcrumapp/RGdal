@@ -1,0 +1,6 @@
+example_one:
+  latitude: 38.89
+  longitude: -77.00
+  city: Washington
+  state: District of Colombia
+  misc: foobar

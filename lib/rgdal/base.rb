@@ -1,6 +1,7 @@
 module RGdal
   class Base
-    # API
+
+    # API Methods
     class << self
       def driver(name)
         define_method :driver_name do
@@ -42,16 +43,16 @@ module RGdal
     def layers
       @layers = @data_source.layers
     end
-    
+
     def driver
       @driver ||= Gdal::Ogr.get_driver_by_name(driver_name)
     end
-    
+
     def switch_layer(name)
       @current_layer = @layers.select { |layer| layer.name == name }.first
       @columns = @current_layer ? @current_layer.fields.map(&:name) : []
     end
-    
+
     def new_layer(filename='export')
       layer(filename).tap do |layer|
         @current_layer = layer
@@ -59,24 +60,28 @@ module RGdal
         @columns = []
       end
     end
-    
+
     def layer(filename)
       @data_source.create_layer(filename, reference, format)
     end
-    
+
     def header(key)
       key
     end
-    
+
     def value(attrib)
       attrib
+    end
+
+    def close
+
     end
 
     def layer_field_definition(name, options={})
       options = {'type' => Gdal::Ogr::OFTSTRING, 'width' => 254}.merge(options)
       name = header(name)
-      field_definition = Gdal::Ogr::FieldDefn.new(name, options['type'])
       @columns.push name
+      field_definition = Gdal::Ogr::FieldDefn.new(name, options['type'])
       field_definition.set_width(options['width']) if options['width']
       field_definition.set_precision(options['precision']) if options['precision']
       @current_layer.create_field(field_definition)
@@ -86,7 +91,7 @@ module RGdal
     def feature(longitude, latitude, opts={})
       opts.keys.each { |key| layer_field_definition(key) } if @columns.empty?
       feat = Gdal::Ogr::Feature.new(@current_layer.definition)
-      
+
       # Geometry
       wkt = "POINT(#{longitude} #{latitude})"
       geometry = Gdal::Ogr::create_geometry_from_wkt(wkt)
@@ -101,9 +106,7 @@ module RGdal
       end
 
       @current_layer.create_feature(feat)
-      puts 'Added Layer'
-      feat = nil
-      geometry = nil
+      feat, geometry = nil, nil
       @current_layer.reset_reading
     end
   end
