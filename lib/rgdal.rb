@@ -1,4 +1,4 @@
-require 'gdal'
+require 'gdal-ruby/ogr'
 require 'rgdal/overrides/layer'
 require 'rgdal/overrides/data_source'
 require 'rgdal/overrides/field_defn'
