@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Rgdal::VERSION
 
-  gem.add_dependency('gdal')
+  gem.add_dependency('gdal', '~> 0.0.5')
   gem.add_dependency('activesupport')
   gem.add_development_dependency('rspec')
 end
