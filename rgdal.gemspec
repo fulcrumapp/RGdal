@@ -2,11 +2,11 @@
 require File.expand_path('../lib/rgdal/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Tyler Johnston"]
-  gem.email         = ["tylerjohnst@gmail.com"]
+  gem.authors       = ["Spatial Networks"]
+  gem.email         = ["sniadmin@spatialnetworks.com"]
   gem.description   = %q{Pretty wrapper for GDAL/OGR}
   gem.summary       = %q{Pretty wrapper for GDAL/OGR}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/spatialnetworks/RGdal"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
