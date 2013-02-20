@@ -4,12 +4,12 @@ Ruby wrapper for GDAL/OGR
 
 ### Terminology Reference:
 
-| GDAL      | Database   |
-| --------- |:----------:|
-| layer     | table      |
-| field_def | column     |
-| feature   | record     |
-| field     | attribute  |
+| GDAL      | Database  |
+| --------- | --------- |
+| layer     | table     |
+| field_def | column    |
+| feature   | record    |
+| field     | attribute |
 
 ## Examples
 
