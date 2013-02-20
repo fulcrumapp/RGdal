@@ -1,23 +1,24 @@
 # RGdal
 
-Wrapper for the C++ish GDal Api
+Ruby wrapper for GDAL/OGR
 
 ### Terminology Reference:
 
-GDAL  //  Relation Database  
-layer == table  
-field_def == column  
-feature == record  
-field == record attribute  
+| GDAL      | Database   |
+| --------- |:----------:|
+| layer     | table      |
+| field_def | column     |
+| feature   | record     |
+| field     | attribute  |
 
 ## Examples
-    
+
 ### Writing
     > file = RGdal::SHP.new('tmp/tmpfolder')
     > file.create_layer('filename')
     > file.feature(lat, long, {attr: 'foo', bar: 'baz'})
     > file.close
-    
+
 ### Reading
     > file = RGdal::SHP.new('tmp/tmpfolder')
     > layer = file.current_layer
